@@ -8,7 +8,7 @@ end
 
 git 'logster' do
     repository node[:logster][:repository]
-    destination "/var/tmp/logster"
+    destination node[:logster][:git][:tempdir]
     reference node[:logster][:version]
     notifies :run, 'execute[create logster]'
 end
