@@ -8,7 +8,7 @@ directory "/usr/share/logster" do
     action :delete
 end
 
-directory "/var/tmp/logster" do
+directory node[:logster][:git][:tempdir] do
     recursive true
     action :delete
 end

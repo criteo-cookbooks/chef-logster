@@ -6,9 +6,11 @@ else
     package "logtail"
 end
 
+tempdir = node[:logster][:git][:tempdir]
+
 git 'logster' do
     repository node[:logster][:repository]
-    destination node[:logster][:git][:tempdir]
+    destination tempdir
     reference node[:logster][:version]
     notifies :run, 'execute[create logster]'
 end
@@ -26,23 +28,5 @@ directory "/var/log/logster" do
 end
 
 execute "create logster" do
-    command "/usr/bin/install -m 0755 -t /usr/bin /var/tmp/logster/bin/logster"
-    creates "/usr/bin/logster"
-end
-
-execute "create logster_helper" do
-    command "/usr/bin/install -m 0644 -t /usr/share/logster /var/tmp/logster/logster/logster_helper.py"
-    creates "/usr/share/logster/logster_helper.py"
-end
-
-if File.exists?("/var/tmp/logster/logster/parsers") then
-    Dir.foreach("/var/tmp/logster/logster/parsers") do |fname|
-        next if fname == '.' or fname == '..'
-        file "/usr/share/logster/#{fname}" do
-            content IO.read("/var/tmp/logster/logster/parsers/#{fname}")
-            owner "root"
-            group "root"
-            mode "0644"
-        end
-    end
+    command "python #{tempdir}/setup.py install"
 end
