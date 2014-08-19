@@ -12,7 +12,7 @@ action :add do
     new_resource.state_dir && options["--state-dir"] = new_resource.state_dir
     new_resource.output && options["--output"] = new_resource.output
 
-    o = options.map{|k,v| "#{k}=#{v}"}.join(" ")
+    o = options.map{|k,v| "#{k}=\"#{v}\""}.join(" ")
 
     o = "#{o} #{new_resource.options}" if new_resource.options
 
