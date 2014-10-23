@@ -28,5 +28,6 @@ directory "/var/log/logster" do
 end
 
 execute "create logster" do
-  command "(cd #{tempdir}; sudo python ./setup.py install)"
+  command "python setup.py install"
+  cwd tempdir
 end
