@@ -1,9 +1,9 @@
 package "git"
 
-if platform_family?("rhel")
-  package "logcheck"
+if platform_family? 'rhel'
+  package 'logcheck'
 else
-  package "logtail"
+  package 'logtail'
 end
 
 tempdir = node[:logster][:git][:tempdir]
@@ -15,19 +15,20 @@ git 'logster' do
   notifies :run, 'execute[create logster]'
 end
 
-directory "/usr/share/logster" do
-  owner "root"
-  group "root"
-  mode "0755"
+directory '/usr/share/logster' do
+  owner 'root'
+  group 'root'
+  mode '0755'
 end
 
-directory "/var/log/logster" do
-  owner "root"
-  group "root"
-  mode "0755"
+directory '/var/log/logster' do
+  owner 'root'
+  group 'root'
+  mode '0755'
 end
 
-execute "create logster" do
-  command "python setup.py install"
+execute 'create logster' do
+  command 'python setup.py install'
   cwd tempdir
+  action :nothing
 end
