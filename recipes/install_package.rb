@@ -10,6 +10,9 @@ end
 
 
 package "logster" do
-  action :nothing if node[:logster][:package][:source]
-  source psource if node[:logster][:package][:source]
+  if node[:logster][:install_method] == 'source'
+    action :remove
+  else
+    source psource
+  end
 end
